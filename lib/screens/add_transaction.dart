@@ -1,5 +1,6 @@
+import 'package:expense_app/models/transaction_data.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:toast/toast.dart';
 
 class AddTransaction extends StatefulWidget {
@@ -106,6 +107,7 @@ class _AddTransactionState extends State<AddTransaction> {
           onChanged: (value) {
             if (value != null) setState(() => newAmount = value);
           },
+          keyboardType: TextInputType.number,
           textAlign: TextAlign.center,
           style: TextStyle(fontSize: 18.0),
         ),
@@ -120,8 +122,8 @@ class _AddTransactionState extends State<AddTransaction> {
                 color: Theme.of(context).accentColor.withOpacity(0.3),
                 child: IconButton(
                   tooltip: 'Set Reminder',
-                  icon: FaIcon(
-                    FontAwesomeIcons.calendarAlt,
+                  icon: Icon(
+                    Icons.event_rounded,
                     color: Theme.of(context).accentColor,
                   ),
                   highlightColor:
@@ -140,6 +142,14 @@ class _AddTransactionState extends State<AddTransaction> {
               child: MaterialButton(
                 onPressed: () {
                   if (newTxTitle != null) {
+                    Provider.of<TransactionData>(context, listen: false)
+                        .addTransaction(
+                            Provider.of<TransactionData>(context, listen: false)
+                                    .transactionCount +
+                                1,
+                            newTxTitle,
+                            double.parse(newAmount),
+                            selectedDate);
                     Toast.show('Transaction added...', context,
                         gravity: Toast.BOTTOM);
                     Navigator.of(context).pop();

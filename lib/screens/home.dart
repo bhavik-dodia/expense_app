@@ -1,8 +1,9 @@
-import 'package:expense_app/models/transaction.dart';
+import 'package:expense_app/models/transaction_data.dart';
 import 'package:expense_app/screens/add_transaction.dart';
+import 'package:expense_app/widgets/chart.dart';
 import 'package:expense_app/widgets/transaction_list.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -14,28 +15,16 @@ class _HomePageState extends State<HomePage>
   AnimationController _fabController;
   Animation<double> _fabFadeAnimation;
 
-  final List<Transaction> transactions = [
-    Transaction(
-      id: 't1',
-      title: 'New Shoes',
-      amount: 70.00,
-      date: DateTime.now(),
-    ),
-    Transaction(
-      id: 't2',
-      title: 'Weekly Groceries',
-      amount: 16.53,
-      date: DateTime.now(),
-    ),
-  ];
-
   @override
   void initState() {
     super.initState();
     _fabController = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 300));
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
+    );
     _fabFadeAnimation = Tween<double>(begin: 1, end: 0).animate(
-        CurvedAnimation(parent: _fabController, curve: Curves.easeInBack));
+      CurvedAnimation(parent: _fabController, curve: Curves.easeInBack),
+    );
   }
 
   @override
@@ -48,34 +37,58 @@ class _HomePageState extends State<HomePage>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           'Expense manager',
-          style: TextStyle(fontSize: 20.0),
+          style: TextStyle(
+            fontSize: 20.0,
+            color: Theme.of(context).canvasColor,
+          ),
         ),
         centerTitle: true,
       ),
       body: Stack(
         children: [
-          Column(
-            children: [
-              Expanded(
-                child: TransactionList(
-                  onBottom: () => _fabController.forward(),
-                  onTop: () => _fabController.reverse(),
+          MediaQuery.of(context).orientation == Orientation.portrait
+              ? Column(
+                  children: [
+                    Chart(
+                      recentTransactions:
+                          Provider.of<TransactionData>(context, listen: false)
+                              .recentTransactions,
+                    ),
+                    Expanded(
+                      child: TransactionList(
+                        onBottom: () => _fabController.forward(),
+                        onTop: () => _fabController.reverse(),
+                      ),
+                    ),
+                  ],
+                )
+              : Row(
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: Chart(
+                        recentTransactions:
+                            Provider.of<TransactionData>(context, listen: false)
+                                .recentTransactions,
+                      ),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: TransactionList(
+                        onBottom: () => _fabController.forward(),
+                        onTop: () => _fabController.reverse(),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
-          ),
-          Align(
-            heightFactor:
-                MediaQuery.of(context).orientation == Orientation.portrait
-                    ? 11.7
-                    : 4.35,
-            alignment: Alignment.bottomCenter,
+          Positioned(
+            bottom: 18.0,
+            right: 18.0,
             child: ScaleTransition(
               scale: _fabFadeAnimation,
               child: FloatingActionButton(
-                // shape: SquircleBorder(),
                 tooltip: 'Add New Transaction',
                 onPressed: () => showModalBottomSheet(
                   context: context,
@@ -91,9 +104,10 @@ class _HomePageState extends State<HomePage>
                 ),
                 backgroundColor: Theme.of(context).accentColor,
                 splashColor: Theme.of(context).accentColor,
-                child: FaIcon(
-                  FontAwesomeIcons.plus,
+                child: Icon(
+                  Icons.add_rounded,
                   color: Theme.of(context).canvasColor,
+                  size: 35.0,
                 ),
               ),
             ),

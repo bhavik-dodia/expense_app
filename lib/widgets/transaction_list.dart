@@ -1,6 +1,7 @@
-import 'package:expense_app/models/transaction.dart';
+import 'package:expense_app/models/transaction_data.dart';
+import 'package:expense_app/widgets/transaction_tile.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class TransactionList extends StatefulWidget {
   final Function onBottom;
@@ -13,33 +14,6 @@ class TransactionList extends StatefulWidget {
 }
 
 class _TransactionListState extends State<TransactionList> {
-  final List<Transaction> _transactions = [
-    Transaction(
-      id: 't1',
-      title: 'New Shoes',
-      amount: 70.00,
-      date: DateTime.now(),
-    ),
-    Transaction(
-      id: 't2',
-      title: 'Weekly Groceries',
-      amount: 16.53,
-      date: DateTime.now(),
-    ),
-    Transaction(
-      id: 't2',
-      title: 'Weekly Groceries',
-      amount: 16.53,
-      date: DateTime.now(),
-    ),
-    Transaction(
-      id: 't1',
-      title: 'New Shoes',
-      amount: 70.00,
-      date: DateTime.now(),
-    ),
-  ];
-
   ScrollController _scrollController;
 
   @override
@@ -68,43 +42,33 @@ class _TransactionListState extends State<TransactionList> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      controller: _scrollController,
-      padding: const EdgeInsets.all(8.0),
-      // physics: BouncingScrollPhysics(),
-      shrinkWrap: true,
-      itemCount: _transactions.length,
-      itemBuilder: (context, txIndex) {
-        var tx = _transactions[txIndex];
-        return Card(
-          elevation: 5.0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15.0),
-          ),
-          child: ListTile(
-            leading: Text(tx.amount.toString()),
-            trailing: IconButton(
-              icon: Icon(
-                Icons.delete_forever_rounded,
-                color: Colors.redAccent,
-              ),
-              iconSize: 30.0,
-              onPressed: () {},
-            ),
-            title: Text(
-              tx.title,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 16.0,
-              ),
-            ),
-            subtitle: Text(
-              DateFormat('EEE, MMM d - hh:mm a').format(tx.date),
-              style: TextStyle(fontSize: 12.0),
-            ),
-          ),
-        );
-      },
+    return Consumer<TransactionData>(
+      builder: (context, transactionData, child) =>
+          transactionData.transactionCount == 0
+              ? ListView(
+                  children: [
+                    // Image.asset('images/Method_Draw_Image.png'),
+                    SizedBox(height: 30.0),
+                    Text(
+                      'You\'re all caught up!\nAdd a new task',
+                      textAlign: TextAlign.center,
+                    )
+                  ],
+                )
+              : ListView.builder(
+                  controller: _scrollController,
+                  padding: const EdgeInsets.all(8.0),
+                  shrinkWrap: true,
+                  itemCount: transactionData.transactionCount,
+                  itemBuilder: (context, txIndex) => Card(
+                    elevation: 5.0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                    ),
+                    child: TransactionTile(
+                        tx: transactionData.transactions[txIndex]),
+                  ),
+                ),
     );
   }
 }
