@@ -1,7 +1,7 @@
 import 'dart:collection';
 
 import 'package:expense_app/models/transaction.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 
 class TransactionData extends ChangeNotifier {
   List<Transaction> _transactions = [
@@ -15,18 +15,6 @@ class TransactionData extends ChangeNotifier {
       id: 1,
       title: 'Weekly Groceries',
       amount: 16.53,
-      date: DateTime.now(),
-    ),
-    Transaction(
-      id: 2,
-      title: 'Weekly Groceries',
-      amount: 16.53,
-      date: DateTime.now(),
-    ),
-    Transaction(
-      id: 3,
-      title: 'New Shoes',
-      amount: 70.00,
       date: DateTime.now(),
     ),
   ];

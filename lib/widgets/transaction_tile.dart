@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:expense_app/models/transaction.dart';
 import 'package:expense_app/models/transaction_data.dart';
 import 'package:flutter/material.dart';
@@ -12,10 +14,42 @@ class TransactionTile extends StatelessWidget {
 
   final Transaction tx;
 
+  final List colors = const [
+    Colors.redAccent,
+    Colors.blueAccent,
+    Colors.amberAccent,
+    Colors.deepPurpleAccent,
+    Colors.deepOrangeAccent,
+    Colors.pinkAccent,
+    Colors.indigoAccent,
+    Colors.green,
+  ];
+
   @override
   Widget build(BuildContext context) {
+    final color = colors[Random().nextInt(colors.length)];
     return ListTile(
-      leading: Text(tx.amount.toString()),
+      leading: Container(
+        height: 55.0,
+        width: 55.0,
+        decoration: BoxDecoration(
+          border: Border.all(color: color),
+          color: color.withOpacity(0.3),
+          shape: BoxShape.circle,
+        ),
+        padding: const EdgeInsets.all(8.0),
+        child: Center(
+          child: RichText(
+            text: TextSpan(
+              text: '₹' + tx.amount.toStringAsFixed(1),
+              style: TextStyle(color: color, fontWeight: FontWeight.bold),
+            ),
+            overflow: TextOverflow.fade,
+            softWrap: false,
+            maxLines: 1,
+          ),
+        ),
+      ),
       trailing: IconButton(
         icon: Icon(
           Icons.delete_forever_rounded,
@@ -33,7 +67,7 @@ class TransactionTile extends StatelessWidget {
         ),
       ),
       subtitle: Text(
-        DateFormat('EEE, MMM d - hh:mm a').format(tx.date),
+        DateFormat('EEE, dd MMM yyyy').format(tx.date),
         style: TextStyle(fontSize: 12.0),
       ),
     );

@@ -47,10 +47,16 @@ class _TransactionListState extends State<TransactionList> {
           transactionData.transactionCount == 0
               ? ListView(
                   children: [
-                    // Image.asset('images/Method_Draw_Image.png'),
+                    FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Image.asset(
+                        'images/no_data.png',
+                        scale: 3.5,
+                      ),
+                    ),
                     SizedBox(height: 30.0),
                     Text(
-                      'You\'re all caught up!\nAdd a new task',
+                      'You\'re all caught up!\nAdd a new transaction',
                       textAlign: TextAlign.center,
                     )
                   ],

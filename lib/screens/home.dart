@@ -36,53 +36,90 @@ class _HomePageState extends State<HomePage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Expense manager',
-          style: TextStyle(
-            fontSize: 20.0,
-            color: Theme.of(context).canvasColor,
-          ),
-        ),
-        centerTitle: true,
-      ),
+      extendBodyBehindAppBar: true,
+      backgroundColor: Theme.of(context).accentColor,
       body: Stack(
         children: [
-          MediaQuery.of(context).orientation == Orientation.portrait
-              ? Column(
-                  children: [
-                    Chart(
-                      recentTransactions:
-                          Provider.of<TransactionData>(context, listen: false)
-                              .recentTransactions,
-                    ),
-                    Expanded(
-                      child: TransactionList(
-                        onBottom: () => _fabController.forward(),
-                        onTop: () => _fabController.reverse(),
-                      ),
-                    ),
-                  ],
-                )
-              : Row(
-                  children: [
-                    Expanded(
-                      flex: 1,
-                      child: Chart(
-                        recentTransactions:
-                            Provider.of<TransactionData>(context, listen: false)
-                                .recentTransactions,
-                      ),
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: TransactionList(
-                        onBottom: () => _fabController.forward(),
-                        onTop: () => _fabController.reverse(),
-                      ),
-                    ),
-                  ],
+          Container(
+            height: MediaQuery.of(context).size.height,
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const SizedBox(height: 45.0),
+                Text(
+                  'Expense manager',
+                  style: TextStyle(
+                    fontSize: 25.0,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).canvasColor,
+                  ),
+                  textAlign: TextAlign.center,
                 ),
+                const SizedBox(height: 5.0),
+                Expanded(
+                  child:
+                      MediaQuery.of(context).orientation == Orientation.portrait
+                          ? Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Chart(
+                                  recentTransactions:
+                                      Provider.of<TransactionData>(context)
+                                          .recentTransactions,
+                                ),
+                                Expanded(
+                                  child: Container(
+                                    clipBehavior: Clip.antiAlias,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(25.0),
+                                        topRight: Radius.circular(25.0),
+                                      ),
+                                      color: Theme.of(context).canvasColor,
+                                    ),
+                                    child: TransactionList(
+                                      onBottom: () => _fabController.forward(),
+                                      onTop: () => _fabController.reverse(),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )
+                          : Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                  flex: 1,
+                                  child: Chart(
+                                    recentTransactions:
+                                        Provider.of<TransactionData>(context)
+                                            .recentTransactions,
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 1,
+                                  child: Container(
+                                    clipBehavior: Clip.antiAlias,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(25.0),
+                                        bottomLeft: Radius.circular(25.0),
+                                      ),
+                                      color: Theme.of(context).canvasColor,
+                                    ),
+                                    child: TransactionList(
+                                      onBottom: () => _fabController.forward(),
+                                      onTop: () => _fabController.reverse(),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                ),
+              ],
+            ),
+          ),
           Positioned(
             bottom: 18.0,
             right: 18.0,

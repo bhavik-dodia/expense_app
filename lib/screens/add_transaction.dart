@@ -119,9 +119,12 @@ class _AddTransactionState extends State<AddTransaction> {
               child: Card(
                 elevation: 0.0,
                 clipBehavior: Clip.antiAlias,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15.0),
+                ),
                 color: Theme.of(context).accentColor.withOpacity(0.3),
                 child: IconButton(
-                  tooltip: 'Set Reminder',
+                  tooltip: 'Select date',
                   icon: Icon(
                     Icons.event_rounded,
                     color: Theme.of(context).accentColor,
@@ -165,6 +168,9 @@ class _AddTransactionState extends State<AddTransaction> {
                 splashColor: Theme.of(context).accentColor.withOpacity(0.5),
                 highlightElevation: 0.0,
                 height: 48.0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15.0),
+                ),
                 child: Text(
                   'Add',
                   style: TextStyle(
