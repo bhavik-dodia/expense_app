@@ -1,13 +1,15 @@
 import 'package:expense_app/models/transaction_data.dart';
 import 'package:expense_app/widgets/transaction_tile.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 
 class TransactionList extends StatefulWidget {
-  final Function onBottom;
-  final Function onTop;
+  final Function onReverse;
+  final Function onForward;
 
-  const TransactionList({Key key, this.onBottom, this.onTop}) : super(key: key);
+  const TransactionList({Key key, this.onReverse, this.onForward})
+      : super(key: key);
 
   @override
   _TransactionListState createState() => _TransactionListState();
@@ -20,16 +22,10 @@ class _TransactionListState extends State<TransactionList> {
   void initState() {
     _scrollController = ScrollController();
     _scrollController.addListener(() {
-      if (_scrollController.offset >=
-              _scrollController.position.maxScrollExtent &&
-          !_scrollController.position.outOfRange) {
-        widget.onBottom();
-      }
-      if (_scrollController.offset <=
-              _scrollController.position.minScrollExtent &&
-          !_scrollController.position.outOfRange) {
-        widget.onTop();
-      }
+      if (_scrollController.position.userScrollDirection ==
+          ScrollDirection.forward) widget.onForward();
+      if (_scrollController.position.userScrollDirection ==
+          ScrollDirection.reverse) widget.onReverse();
     });
     super.initState();
   }
@@ -54,8 +50,8 @@ class _TransactionListState extends State<TransactionList> {
                         scale: 3.5,
                       ),
                     ),
-                    SizedBox(height: 30.0),
-                    Text(
+                    const SizedBox(height: 30.0),
+                    const Text(
                       'You\'re all caught up!\nAdd a new transaction',
                       textAlign: TextAlign.center,
                     )
@@ -64,6 +60,9 @@ class _TransactionListState extends State<TransactionList> {
               : ListView.builder(
                   controller: _scrollController,
                   padding: const EdgeInsets.all(8.0),
+                  physics: const BouncingScrollPhysics(
+                    parent: AlwaysScrollableScrollPhysics(),
+                  ),
                   shrinkWrap: true,
                   itemCount: transactionData.transactionCount,
                   itemBuilder: (context, txIndex) => Card(

@@ -79,8 +79,8 @@ class _HomePageState extends State<HomePage>
                                       color: Theme.of(context).canvasColor,
                                     ),
                                     child: TransactionList(
-                                      onBottom: () => _fabController.forward(),
-                                      onTop: () => _fabController.reverse(),
+                                      onReverse: () => _fabController.forward(),
+                                      onForward: () => _fabController.reverse(),
                                     ),
                                   ),
                                 ),
@@ -109,8 +109,8 @@ class _HomePageState extends State<HomePage>
                                       color: Theme.of(context).canvasColor,
                                     ),
                                     child: TransactionList(
-                                      onBottom: () => _fabController.forward(),
-                                      onTop: () => _fabController.reverse(),
+                                      onReverse: () => _fabController.forward(),
+                                      onForward: () => _fabController.reverse(),
                                     ),
                                   ),
                                 ),
