@@ -35,7 +35,11 @@ class TransactionData extends ChangeNotifier {
   int get transactionCount => _transactions.length;
 
   void addTransaction(
-      int txId, String txTitle, double txAmount, DateTime txDate) {
+    int txId,
+    String txTitle,
+    double txAmount,
+    DateTime txDate,
+  ) {
     _transactions.add(
       Transaction(
         title: txTitle,

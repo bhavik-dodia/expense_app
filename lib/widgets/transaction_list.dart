@@ -41,21 +41,24 @@ class _TransactionListState extends State<TransactionList> {
     return Consumer<TransactionData>(
       builder: (context, transactionData, child) =>
           transactionData.transactionCount == 0
-              ? ListView(
-                  children: [
-                    FittedBox(
-                      fit: BoxFit.scaleDown,
-                      child: Image.asset(
+              ? Center(
+                  child: ListView(
+                    shrinkWrap: true,
+                    physics: BouncingScrollPhysics(),
+                    children: [
+                      Image.asset(
                         'images/no_data.png',
-                        scale: 3.5,
+                        height: 150.0,
+                        width: 150.0,
                       ),
-                    ),
-                    const SizedBox(height: 30.0),
-                    const Text(
-                      'You\'re all caught up!\nAdd a new transaction',
-                      textAlign: TextAlign.center,
-                    )
-                  ],
+                      const SizedBox(height: 15.0),
+                      const Text(
+                        'You\'re all caught up!\nAdd a new transaction',
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 15.0),
+                    ],
+                  ),
                 )
               : ListView.builder(
                   controller: _scrollController,
@@ -71,7 +74,8 @@ class _TransactionListState extends State<TransactionList> {
                       borderRadius: BorderRadius.circular(15.0),
                     ),
                     child: TransactionTile(
-                        tx: transactionData.transactions[txIndex]),
+                      tx: transactionData.transactions[txIndex],
+                    ),
                   ),
                 ),
     );

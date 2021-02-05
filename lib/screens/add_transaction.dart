@@ -12,7 +12,6 @@ class _AddTransactionState extends State<AddTransaction> {
   String newTxTitle;
   String newAmount;
   DateTime selectedDate = DateTime.now();
-  // TimeOfDay selectedTime = TimeOfDay.now();
 
   _selectDate(BuildContext context) async {
     final DateTime date = await showDatePicker(
@@ -24,26 +23,8 @@ class _AddTransactionState extends State<AddTransaction> {
     );
     if (date != null) {
       setState(() => selectedDate = date);
-      // _selectTime();
     }
   }
-
-  // _selectTime() async {
-  //   final TimeOfDay time = await showTimePicker(
-  //     context: context,
-  //     initialTime: selectedTime,
-  //   );
-  //   if (time != null) {
-  //     setState(() {
-  //       selectedTime = time;
-  //       selectedDate = selectedDate.add(Duration(
-  //         hours: selectedTime.hour,
-  //         minutes: selectedTime.minute,
-  //       ));
-  //       seconds = selectedDate.difference(DateTime.now()).inSeconds;
-  //     });
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +37,7 @@ class _AddTransactionState extends State<AddTransaction> {
         right: 15.0,
       ),
       children: [
-        Icon(
+        const Icon(
           Icons.horizontal_rule_rounded,
           size: 40.0,
           color: Colors.grey,
@@ -81,7 +62,7 @@ class _AddTransactionState extends State<AddTransaction> {
             focusedErrorBorder: InputBorder.none,
             filled: false,
             hintText: 'Enter title',
-            hintStyle: TextStyle(fontSize: 18.0),
+            hintStyle: const TextStyle(fontSize: 18.0),
           ),
           onChanged: (value) {
             if (value != null) setState(() => newTxTitle = value);
@@ -89,7 +70,7 @@ class _AddTransactionState extends State<AddTransaction> {
           cursorColor: Theme.of(context).accentColor,
           textAlign: TextAlign.center,
           textCapitalization: TextCapitalization.sentences,
-          style: TextStyle(fontSize: 18.0),
+          style: const TextStyle(fontSize: 18.0),
         ),
         TextField(
           decoration: InputDecoration(
@@ -101,7 +82,7 @@ class _AddTransactionState extends State<AddTransaction> {
             focusedErrorBorder: InputBorder.none,
             filled: false,
             hintText: 'Enter amount',
-            hintStyle: TextStyle(fontSize: 18.0),
+            hintStyle: const TextStyle(fontSize: 18.0),
           ),
           cursorColor: Theme.of(context).accentColor,
           onChanged: (value) {
@@ -109,7 +90,7 @@ class _AddTransactionState extends State<AddTransaction> {
           },
           keyboardType: TextInputType.number,
           textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 18.0),
+          style: const TextStyle(fontSize: 18.0),
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -138,7 +119,7 @@ class _AddTransactionState extends State<AddTransaction> {
             ),
             Expanded(
               flex: 2,
-              child: SizedBox(),
+              child: const SizedBox(),
             ),
             Expanded(
               flex: 2,
@@ -153,12 +134,18 @@ class _AddTransactionState extends State<AddTransaction> {
                             newTxTitle,
                             double.parse(newAmount),
                             selectedDate);
-                    Toast.show('Transaction added...', context,
-                        gravity: Toast.BOTTOM);
+                    Toast.show(
+                      'Transaction added...',
+                      context,
+                      gravity: Toast.BOTTOM,
+                    );
                     Navigator.of(context).pop();
                   } else {
-                    Toast.show('Please give a title', context,
-                        gravity: Toast.TOP);
+                    Toast.show(
+                      'Please give a title',
+                      context,
+                      gravity: Toast.TOP,
+                    );
                   }
                 },
                 elevation: 0.0,
@@ -171,7 +158,7 @@ class _AddTransactionState extends State<AddTransaction> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15.0),
                 ),
-                child: Text(
+                child: const Text(
                   'Add',
                   style: TextStyle(
                     fontSize: 18.0,
@@ -182,7 +169,7 @@ class _AddTransactionState extends State<AddTransaction> {
             ),
           ],
         ),
-        SizedBox(height: 15.0),
+        const SizedBox(height: 15.0),
       ],
     );
   }

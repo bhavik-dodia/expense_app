@@ -40,85 +40,85 @@ class _HomePageState extends State<HomePage>
       backgroundColor: Theme.of(context).accentColor,
       body: Stack(
         children: [
-          Container(
-            height: MediaQuery.of(context).size.height,
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                const SizedBox(height: 45.0),
-                Text(
-                  'Expense manager',
-                  style: TextStyle(
-                    fontSize: 25.0,
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).canvasColor,
-                  ),
-                  textAlign: TextAlign.center,
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const SizedBox(height: 45.0),
+              Text(
+                'Expense manager',
+                style: TextStyle(
+                  fontSize: 25.0,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).canvasColor,
                 ),
-                const SizedBox(height: 5.0),
-                Expanded(
-                  child:
-                      MediaQuery.of(context).orientation == Orientation.portrait
-                          ? Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Chart(
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 5.0),
+              Expanded(
+                child:
+                    MediaQuery.of(context).orientation == Orientation.portrait
+                        ? Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Chart(
+                                recentTransactions:
+                                    Provider.of<TransactionData>(context)
+                                        .recentTransactions,
+                              ),
+                              Expanded(
+                                child: Container(
+                                  clipBehavior: Clip.antiAlias,
+                                  decoration: BoxDecoration(
+                                    borderRadius: const BorderRadius.only(
+                                      topLeft: Radius.circular(25.0),
+                                      topRight: Radius.circular(25.0),
+                                    ),
+                                    color: Theme.of(context).canvasColor,
+                                  ),
+                                  child: TransactionList(
+                                    onReverse: () =>
+                                        _fabController.forward().whenComplete(
+                                              () => Future.delayed(
+                                                const Duration(seconds: 2),
+                                                () => _fabController.reverse(),
+                                              ),
+                                            ),
+                                    onForward: () => _fabController.reverse(),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )
+                        : Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child: Chart(
                                   recentTransactions:
                                       Provider.of<TransactionData>(context)
                                           .recentTransactions,
                                 ),
-                                Expanded(
-                                  child: Container(
-                                    clipBehavior: Clip.antiAlias,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(25.0),
-                                        topRight: Radius.circular(25.0),
-                                      ),
-                                      color: Theme.of(context).canvasColor,
+                              ),
+                              Expanded(
+                                child: Container(
+                                  clipBehavior: Clip.antiAlias,
+                                  decoration: BoxDecoration(
+                                    borderRadius: const BorderRadius.only(
+                                      topLeft: Radius.circular(25.0),
+                                      bottomLeft: Radius.circular(25.0),
                                     ),
-                                    child: TransactionList(
-                                      onReverse: () => _fabController.forward(),
-                                      onForward: () => _fabController.reverse(),
-                                    ),
+                                    color: Theme.of(context).canvasColor,
+                                  ),
+                                  child: TransactionList(
+                                    onReverse: () => _fabController.forward(),
+                                    onForward: () => _fabController.reverse(),
                                   ),
                                 ),
-                              ],
-                            )
-                          : Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Expanded(
-                                  flex: 1,
-                                  child: Chart(
-                                    recentTransactions:
-                                        Provider.of<TransactionData>(context)
-                                            .recentTransactions,
-                                  ),
-                                ),
-                                Expanded(
-                                  flex: 1,
-                                  child: Container(
-                                    clipBehavior: Clip.antiAlias,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(25.0),
-                                        bottomLeft: Radius.circular(25.0),
-                                      ),
-                                      color: Theme.of(context).canvasColor,
-                                    ),
-                                    child: TransactionList(
-                                      onReverse: () => _fabController.forward(),
-                                      onForward: () => _fabController.reverse(),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                ),
-              ],
-            ),
+                              ),
+                            ],
+                          ),
+              ),
+            ],
           ),
           Positioned(
             bottom: 18.0,
@@ -131,8 +131,8 @@ class _HomePageState extends State<HomePage>
                   context: context,
                   builder: (context) => AddTransaction(),
                   clipBehavior: Clip.antiAlias,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: const BorderRadius.only(
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(30.0),
                       topRight: Radius.circular(30.0),
                     ),

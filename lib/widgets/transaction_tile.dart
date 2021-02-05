@@ -46,12 +46,11 @@ class TransactionTile extends StatelessWidget {
             ),
             overflow: TextOverflow.fade,
             softWrap: false,
-            maxLines: 1,
           ),
         ),
       ),
       trailing: IconButton(
-        icon: Icon(
+        icon: const Icon(
           Icons.delete_forever_rounded,
           color: Colors.redAccent,
         ),
@@ -61,14 +60,14 @@ class TransactionTile extends StatelessWidget {
       ),
       title: Text(
         tx.title,
-        style: TextStyle(
+        style: const TextStyle(
           fontWeight: FontWeight.bold,
           fontSize: 16.0,
         ),
       ),
       subtitle: Text(
         DateFormat('EEE, dd MMM yyyy').format(tx.date),
-        style: TextStyle(fontSize: 12.0),
+        style: const TextStyle(fontSize: 12.0),
       ),
     );
   }

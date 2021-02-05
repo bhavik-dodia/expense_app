@@ -50,23 +50,6 @@ class Chart extends StatelessWidget {
               )
               .toList(),
         ),
-        // ListView.separated(
-        //   separatorBuilder: (context, index) => SizedBox(
-        //     width: MediaQuery.of(context).size.width * 0.06,
-        //   ),
-        //   scrollDirection: Axis.horizontal,
-        //   itemCount: groupedTransactionValues.length,
-        //   itemBuilder: (context, index) {
-        //     var data = groupedTransactionValues[index];
-        //     return ChartBar(
-        //       label: data['day'],
-        //       spendingAmount: data['amount'],
-        //       spendingPctOfTotal: totalSpending == 0.0
-        //           ? 0.0
-        //           : (data['amount'] as double) / totalSpending,
-        //     );
-        //   },
-        // ),
       ),
     );
   }
