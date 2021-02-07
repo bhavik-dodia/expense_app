@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:expense_app/models/transaction_data.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:toast/toast.dart';
@@ -9,25 +12,58 @@ class AddTransaction extends StatefulWidget {
 }
 
 class _AddTransactionState extends State<AddTransaction> {
-  String newTxTitle;
-  String newAmount;
-  DateTime selectedDate = DateTime.now();
+  String _newTxTitle;
+  String _newAmount;
+  DateTime _selectedDate = DateTime.now();
 
   _selectDate(BuildContext context) async {
-    final DateTime date = await showDatePicker(
-      context: context,
-      initialDate: selectedDate,
-      firstDate: DateTime(DateTime.now().year - 5),
-      lastDate: DateTime(DateTime.now().year + 5),
-      fieldLabelText: 'Transaction happened on',
-    );
+    final DateTime date = Platform.isAndroid
+        ? await showDatePicker(
+            context: context,
+            initialDate: _selectedDate,
+            firstDate: DateTime(DateTime.now().year - 5),
+            lastDate: DateTime(DateTime.now().year + 5),
+            fieldLabelText: 'Transaction happened on',
+          )
+        : await showCupertinoModalPopup(
+            context: context,
+            builder: (context) => Container(
+              height: 260,
+              clipBehavior: Clip.antiAlias,
+              decoration: BoxDecoration(
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(30.0),
+                  topRight: Radius.circular(30.0),
+                ),
+                color: Colors.white,
+              ),
+              child: Column(
+                children: [
+                  Container(
+                    height: 200,
+                    child: CupertinoDatePicker(
+                      mode: CupertinoDatePickerMode.date,
+                      initialDateTime: _selectedDate,
+                      onDateTimeChanged: (val) =>
+                          setState(() => _selectedDate = val),
+                    ),
+                  ),
+                  CupertinoButton(
+                    child: const Text('OK'),
+                    onPressed: () => Navigator.of(context).pop(),
+                  ),
+                ],
+              ),
+            ),
+          );
     if (date != null) {
-      setState(() => selectedDate = date);
+      setState(() => _selectedDate = date);
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return ListView(
       shrinkWrap: true,
       physics: BouncingScrollPhysics(),
@@ -48,7 +84,7 @@ class _AddTransactionState extends State<AddTransaction> {
           style: TextStyle(
             fontSize: 25.0,
             fontWeight: FontWeight.bold,
-            color: Theme.of(context).accentColor,
+            color: theme.accentColor,
           ),
         ),
         TextField(
@@ -65,9 +101,9 @@ class _AddTransactionState extends State<AddTransaction> {
             hintStyle: const TextStyle(fontSize: 18.0),
           ),
           onChanged: (value) {
-            if (value != null) setState(() => newTxTitle = value);
+            if (value != null) setState(() => _newTxTitle = value);
           },
-          cursorColor: Theme.of(context).accentColor,
+          cursorColor: theme.accentColor,
           textAlign: TextAlign.center,
           textCapitalization: TextCapitalization.sentences,
           style: const TextStyle(fontSize: 18.0),
@@ -84,9 +120,9 @@ class _AddTransactionState extends State<AddTransaction> {
             hintText: 'Enter amount',
             hintStyle: const TextStyle(fontSize: 18.0),
           ),
-          cursorColor: Theme.of(context).accentColor,
+          cursorColor: theme.accentColor,
           onChanged: (value) {
-            if (value != null) setState(() => newAmount = value);
+            if (value != null) setState(() => _newAmount = value);
           },
           keyboardType: TextInputType.number,
           textAlign: TextAlign.center,
@@ -103,37 +139,38 @@ class _AddTransactionState extends State<AddTransaction> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15.0),
                 ),
-                color: Theme.of(context).accentColor.withOpacity(0.3),
+                color: theme.accentColor.withOpacity(0.3),
                 child: IconButton(
                   tooltip: 'Select date',
                   icon: Icon(
                     Icons.event_rounded,
-                    color: Theme.of(context).accentColor,
+                    color: theme.accentColor,
                   ),
-                  highlightColor:
-                      Theme.of(context).accentColor.withOpacity(0.4),
-                  splashColor: Theme.of(context).accentColor.withOpacity(0.5),
+                  highlightColor: theme.accentColor.withOpacity(0.4),
+                  splashColor: theme.accentColor.withOpacity(0.5),
                   onPressed: () => _selectDate(context),
                 ),
               ),
             ),
             Expanded(
-              flex: 2,
+              flex: MediaQuery.of(context).orientation == Orientation.landscape
+                  ? 10
+                  : 3,
               child: const SizedBox(),
             ),
             Expanded(
               flex: 2,
               child: MaterialButton(
                 onPressed: () {
-                  if (newTxTitle != null) {
+                  if (_newTxTitle != null) {
                     Provider.of<TransactionData>(context, listen: false)
                         .addTransaction(
                             Provider.of<TransactionData>(context, listen: false)
                                     .transactionCount +
                                 1,
-                            newTxTitle,
-                            double.parse(newAmount),
-                            selectedDate);
+                            _newTxTitle,
+                            double.parse(_newAmount),
+                            _selectedDate);
                     Toast.show(
                       'Transaction added...',
                       context,
@@ -149,10 +186,10 @@ class _AddTransactionState extends State<AddTransaction> {
                   }
                 },
                 elevation: 0.0,
-                color: Theme.of(context).accentColor.withOpacity(0.3),
-                textColor: Theme.of(context).accentColor,
-                highlightColor: Theme.of(context).accentColor.withOpacity(0.4),
-                splashColor: Theme.of(context).accentColor.withOpacity(0.5),
+                color: theme.accentColor.withOpacity(0.3),
+                textColor: theme.accentColor,
+                highlightColor: theme.accentColor.withOpacity(0.4),
+                splashColor: theme.accentColor.withOpacity(0.5),
                 highlightElevation: 0.0,
                 height: 48.0,
                 shape: RoundedRectangleBorder(

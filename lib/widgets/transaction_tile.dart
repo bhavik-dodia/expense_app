@@ -50,6 +50,7 @@ class TransactionTile extends StatelessWidget {
         ),
       ),
       trailing: IconButton(
+        tooltip: 'Delete transaction',
         icon: const Icon(
           Icons.delete_forever_rounded,
           color: Colors.redAccent,

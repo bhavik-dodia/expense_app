@@ -35,121 +35,122 @@ class _HomePageState extends State<HomePage>
 
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
+    final theme = Theme.of(context);
     return Scaffold(
       extendBodyBehindAppBar: true,
-      backgroundColor: Theme.of(context).accentColor,
-      body: Stack(
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const SizedBox(height: 45.0),
-              Text(
+      backgroundColor: theme.accentColor,
+      body: Padding(
+        padding: EdgeInsets.only(top: mediaQuery.padding.top),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
                 'Expense manager',
                 style: TextStyle(
                   fontSize: 25.0,
                   fontWeight: FontWeight.bold,
-                  color: Theme.of(context).canvasColor,
+                  color: theme.canvasColor,
                 ),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 5.0),
-              Expanded(
-                child:
-                    MediaQuery.of(context).orientation == Orientation.portrait
-                        ? Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Chart(
-                                recentTransactions:
-                                    Provider.of<TransactionData>(context)
-                                        .recentTransactions,
+            ),
+            Expanded(
+              child: mediaQuery.orientation == Orientation.portrait
+                  ? Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Chart(
+                          height: mediaQuery.size.height * 0.2,
+                          recentTransactions:
+                              Provider.of<TransactionData>(context)
+                                  .recentTransactions,
+                        ),
+                        const SizedBox(height: 10.0),
+                        Expanded(
+                          child: Container(
+                            clipBehavior: Clip.antiAlias,
+                            decoration: BoxDecoration(
+                              borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(30.0),
+                                topRight: Radius.circular(30.0),
                               ),
-                              Expanded(
-                                child: Container(
-                                  clipBehavior: Clip.antiAlias,
-                                  decoration: BoxDecoration(
-                                    borderRadius: const BorderRadius.only(
-                                      topLeft: Radius.circular(25.0),
-                                      topRight: Radius.circular(25.0),
-                                    ),
-                                    color: Theme.of(context).canvasColor,
-                                  ),
-                                  child: TransactionList(
-                                    onReverse: () =>
-                                        _fabController.forward().whenComplete(
-                                              () => Future.delayed(
-                                                const Duration(seconds: 2),
-                                                () => _fabController.reverse(),
-                                              ),
-                                            ),
-                                    onForward: () => _fabController.reverse(),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          )
-                        : Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                child: Chart(
-                                  recentTransactions:
-                                      Provider.of<TransactionData>(context)
-                                          .recentTransactions,
-                                ),
-                              ),
-                              Expanded(
-                                child: Container(
-                                  clipBehavior: Clip.antiAlias,
-                                  decoration: BoxDecoration(
-                                    borderRadius: const BorderRadius.only(
-                                      topLeft: Radius.circular(25.0),
-                                      bottomLeft: Radius.circular(25.0),
-                                    ),
-                                    color: Theme.of(context).canvasColor,
-                                  ),
-                                  child: TransactionList(
-                                    onReverse: () => _fabController.forward(),
-                                    onForward: () => _fabController.reverse(),
-                                  ),
-                                ),
-                              ),
-                            ],
+                              color: theme.canvasColor,
+                            ),
+                            child: TransactionList(
+                              onReverse: () =>
+                                  _fabController.forward().whenComplete(
+                                        () => Future.delayed(
+                                          const Duration(seconds: 2),
+                                          () => _fabController.reverse(),
+                                        ),
+                                      ),
+                              onForward: () => _fabController.reverse(),
+                            ),
                           ),
-              ),
-            ],
-          ),
-          Positioned(
-            bottom: 18.0,
-            right: 18.0,
-            child: ScaleTransition(
-              scale: _fabFadeAnimation,
-              child: FloatingActionButton(
-                tooltip: 'Add New Transaction',
-                onPressed: () => showModalBottomSheet(
-                  context: context,
-                  builder: (context) => AddTransaction(),
-                  clipBehavior: Clip.antiAlias,
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(30.0),
-                      topRight: Radius.circular(30.0),
+                        ),
+                      ],
+                    )
+                  : Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Chart(
+                            height: mediaQuery.size.height * 0.5,
+                            recentTransactions:
+                                Provider.of<TransactionData>(context)
+                                    .recentTransactions,
+                          ),
+                        ),
+                        Expanded(
+                          child: Container(
+                            clipBehavior: Clip.antiAlias,
+                            decoration: BoxDecoration(
+                              borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(30.0),
+                                bottomLeft: Radius.circular(30.0),
+                              ),
+                              color: theme.canvasColor,
+                            ),
+                            child: TransactionList(
+                              onReverse: () => _fabController.forward(),
+                              onForward: () => _fabController.reverse(),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                  isScrollControlled: true,
-                ),
-                backgroundColor: Theme.of(context).accentColor,
-                splashColor: Theme.of(context).accentColor,
-                child: Icon(
-                  Icons.add_rounded,
-                  color: Theme.of(context).canvasColor,
-                  size: 35.0,
-                ),
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: ScaleTransition(
+        scale: _fabFadeAnimation,
+        child: FloatingActionButton(
+          tooltip: 'Add New Transaction',
+          onPressed: () => showModalBottomSheet(
+            context: context,
+            builder: (context) => AddTransaction(),
+            clipBehavior: Clip.antiAlias,
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(30.0),
+                topRight: Radius.circular(30.0),
               ),
             ),
+            isScrollControlled: true,
           ),
-        ],
+          backgroundColor: theme.accentColor,
+          splashColor: theme.accentColor,
+          child: Icon(
+            Icons.add_rounded,
+            color: theme.canvasColor,
+            size: 35.0,
+          ),
+        ),
       ),
     );
   }

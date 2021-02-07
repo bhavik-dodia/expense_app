@@ -5,8 +5,10 @@ import 'package:intl/intl.dart';
 
 class Chart extends StatelessWidget {
   final List<Transaction> recentTransactions;
+  final double height;
 
-  const Chart({Key key, this.recentTransactions}) : super(key: key);
+  const Chart({Key key, this.recentTransactions, this.height})
+      : super(key: key);
 
   List<Map<String, Object>> get groupedTransactionValues =>
       List.generate(7, (index) {
@@ -35,7 +37,8 @@ class Chart extends StatelessWidget {
         borderRadius: BorderRadius.circular(15.0),
       ),
       child: Container(
-        height: 150.0,
+        height: height,
+        padding: const EdgeInsets.all(8.0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: groupedTransactionValues

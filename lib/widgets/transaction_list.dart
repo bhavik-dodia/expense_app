@@ -44,7 +44,7 @@ class _TransactionListState extends State<TransactionList> {
               ? Center(
                   child: ListView(
                     shrinkWrap: true,
-                    physics: BouncingScrollPhysics(),
+                    physics: const BouncingScrollPhysics(),
                     children: [
                       Image.asset(
                         'images/no_data.png',
