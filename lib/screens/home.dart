@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:expense_app/models/transaction_data.dart';
 import 'package:expense_app/screens/add_transaction.dart';
 import 'package:expense_app/widgets/chart.dart';
 import 'package:expense_app/widgets/transaction_list.dart';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
@@ -11,13 +14,23 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin, WidgetsBindingObserver {
   AnimationController _fabController;
   Animation<double> _fabFadeAnimation;
 
   @override
   void initState() {
     super.initState();
+
+    WidgetsBinding.instance.addObserver(this);
+    getApplicationDocumentsDirectory().then(
+      (Directory directory) =>
+          File('${directory.path}/transactions.json').readAsString().then(
+                (value) => Provider.of<TransactionData>(context, listen: false)
+                    .loadTransactions(value),
+              ),
+    );
+
     _fabController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 300),
@@ -28,8 +41,16 @@ class _HomePageState extends State<HomePage>
   }
 
   @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    if (state == AppLifecycleState.paused)
+      Provider.of<TransactionData>(context, listen: false).saveTransactions();
+  }
+
+  @override
   void dispose() {
     _fabController.dispose();
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
