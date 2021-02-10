@@ -2,9 +2,10 @@ import 'dart:collection';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:expense_app/models/transaction.dart';
 import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
+
+import 'transaction.dart';
 
 class TransactionData extends ChangeNotifier {
   List<Transaction> _transactions = [];

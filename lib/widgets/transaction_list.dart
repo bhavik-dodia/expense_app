@@ -1,8 +1,9 @@
-import 'package:expense_app/models/transaction_data.dart';
-import 'package:expense_app/widgets/transaction_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
+
+import '../models/transaction_data.dart';
+import 'transaction_tile.dart';
 
 class TransactionList extends StatefulWidget {
   final Function onReverse;

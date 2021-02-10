@@ -1,7 +1,8 @@
-import 'package:expense_app/models/transaction.dart';
-import 'package:expense_app/widgets/chart-bar.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
+import '../models/transaction.dart';
+import 'chart-bar.dart';
 
 class Chart extends StatelessWidget {
   final List<Transaction> recentTransactions;

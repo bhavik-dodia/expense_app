@@ -1,8 +1,9 @@
-import 'package:expense_app/models/transaction_data.dart';
-import 'package:expense_app/screens/home.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+
+import 'models/transaction_data.dart';
+import 'screens/home.dart';
 
 void main() => runApp(MyApp());
 

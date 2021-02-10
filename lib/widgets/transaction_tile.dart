@@ -1,10 +1,11 @@
 import 'dart:math';
 
-import 'package:expense_app/models/transaction.dart';
-import 'package:expense_app/models/transaction_data.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+
+import '../models/transaction.dart';
+import '../models/transaction_data.dart';
 
 class TransactionTile extends StatelessWidget {
   const TransactionTile({
