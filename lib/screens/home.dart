@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -138,7 +139,12 @@ class _HomePageState extends State<HomePage>
                               color: theme.canvasColor,
                             ),
                             child: TransactionList(
-                              onReverse: () => _fabController.forward(),
+                              onReverse: () => _fabController.forward().whenComplete(
+                                        () => Future.delayed(
+                                          const Duration(seconds: 2),
+                                          () => _fabController.reverse(),
+                                        ),
+                                      ),
                               onForward: () => _fabController.reverse(),
                             ),
                           ),
